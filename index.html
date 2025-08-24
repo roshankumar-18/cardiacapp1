@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cardiac Disease Predictor</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      border-radius: 20px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.35);
+      overflow: hidden;
+    }
+    .card-header {
+      background: #ffffff;
+      color: #2a5298;
+      font-weight: 800;
+      font-size: 1.4rem;
+      text-align: center;
+      border-bottom: 0;
+    }
+    .form-label { font-weight: 600; color: #2b2b2b; }
+    .hint { font-size: .85rem; color: #6c757d; }
+    .btn-primary {
+      border-radius: 30px;
+      padding: 10px 22px;
+      font-weight: 700;
+    }
+    .badge-pill { border-radius: 999px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8">
+        <div class="card">
+          <div class="card-header py-3">
+            🫀 Cardiac Disease Predictor
+          </div>
+          <div class="card-body bg-white text-dark p-4">
+
+            <form action="/predict" method="post" novalidate>
+
+              <!-- 1) age (years) -->
+              <div class="mb-3">
+                <label class="form-label">Age (years)</label>
+                <input type="number" class="form-control" name="age" min="1" max="120" step="1" placeholder="e.g., 45" required>
+                <div class="hint">If your dataset stores age in days, convert to years in your notebook or pipeline.</div>
+              </div>
+
+              <!-- 2) height (cm) -->
+              <div class="mb-3">
+                <label class="form-label">Height (cm)</label>
+                <input type="number" class="form-control" name="height" min="80" max="250" step="1" placeholder="e.g., 170" required>
+              </div>
+
+              <!-- 3) weight (kg) -->
+              <div class="mb-3">
+                <label class="form-label">Weight (kg)</label>
+                <input type="number" class="form-control" name="weight" min="20" max="300" step="0.1" placeholder="e.g., 70.5" required>
+              </div>
+
+              <!-- 4) gender -->
+              <div class="mb-3">
+                <label class="form-label">Gender</label>
+                <select class="form-select" name="gender" required>
+                  <option value="" selected disabled>Select...</option>
+                  <option value="0">Female</option>
+                  <option value="1">Male</option>
+                </select>
+              </div>
+
+              <!-- 5) ap_hi (systolic) -->
+              <div class="mb-3">
+                <label class="form-label">Systolic BP (ap_hi)</label>
+                <input type="number" class="form-control" name="ap_hi" min="50" max="260" step="1" placeholder="e.g., 120" required>
+              </div>
+
+              <!-- 6) ap_lo (diastolic) -->
+              <div class="mb-3">
+                <label class="form-label">Diastolic BP (ap_lo)</label>
+                <input type="number" class="form-control" name="ap_lo" min="30" max="200" step="1" placeholder="e.g., 80" required>
+              </div>
+
+              <!-- 7) cholesterol -->
+              <div class="mb-3">
+                <label class="form-label">Cholesterol</label>
+                <select class="form-select" name="cholesterol" required>
+                  <option value="" selected disabled>Select...</option>
+                  <option value="1">1 — Normal</option>
+                  <option value="2">2 — Above Normal</option>
+                  <option value="3">3 — Well Above Normal</option>
+                </select>
+              </div>
+
+              <!-- 8) gluc -->
+              <div class="mb-3">
+                <label class="form-label">Glucose</label>
+                <select class="form-select" name="gluc" required>
+                  <option value="" selected disabled>Select...</option>
+                  <option value="1">1 — Normal</option>
+                  <option value="2">2 — Above Normal</option>
+                  <option value="3">3 — Well Above Normal</option>
+                </select>
+              </div>
+
+              <!-- 9) smoke -->
+              <div class="mb-3">
+                <label class="form-label">Smoker</label>
+                <select class="form-select" name="smoke" required>
+                  <option value="" selected disabled>Select...</option>
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+
+              <!-- 10) alco -->
+              <div class="mb-3">
+                <label class="form-label">Alcohol Intake</label>
+                <select class="form-select" name="alco" required>
+                  <option value="" selected disabled>Select...</option>
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+
+              <!-- 11) active -->
+              <div class="mb-4">
+                <label class="form-label">Physically Active</label>
+                <select class="form-select" name="active" required>
+                  <option value="" selected disabled>Select...</option>
+                  <option value="0">No</option>
+                  <option value="1">Yes</option>
+                </select>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between">
+                <span class="badge text-bg-light badge-pill px-3 py-2">11 features</span>
+                <button type="submit" class="btn btn-primary">Predict</button>
+              </div>
+            </form>
+
+            {% if prediction_text %}
+            <div class="alert mt-4 text-center {{ 'alert-success' if 'No Disease' in prediction_text else 'alert-danger' }}">
+              <strong>{{ prediction_text }}</strong>
+            </div>
+            {% endif %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (optional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
