@@ -1,2 +1,2 @@
 # aiproject01
-Cardiac Disease predicting Machine Learning model
+https://cardiacapp1-385bihfg5zbmfaorfjawhf.streamlit.app/
