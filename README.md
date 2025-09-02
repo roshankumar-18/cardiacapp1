@@ -1,4 +1,5 @@
-Click the link below to Enter the Web App for Cardiac disease prediction using ML Models
+Click the link below to Enter the Web App for Cardiac disease prediction using ML Model.
+
 https://cardiacapp1-385bihfg5zbmfaorfjawhf.streamlit.app/
 
 Cardiac Disease Prediction using Machine Learning
